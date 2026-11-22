@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /commande.html
+Sitemap: https://samir-bkh.github.io/FADE/sitemap.xml

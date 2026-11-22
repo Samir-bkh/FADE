@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Commande FADE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Finalisez votre commande FADE Barbers.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FADE Barbers">
+<meta property="og:title" content="Commande FADE">
+<meta property="og:description" content="Finalisez votre commande FADE Barbers.">
+<meta property="og:image" content="https://samir-bkh.github.io/FADE/assets/img/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/img/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Jost:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/css/style.css">
+<meta name="robots" content="noindex">
+</head>
+<body data-page="checkout">
+<a class="sr-only" href="#main">Aller au contenu</a>
+<header id="site-header" class="site-header"></header>
+<main id="main">
+<div class="wrap">
+  <div id="checkout-wrap">
+    <div class="page-head"><span class="eyebrow">Commande</span><h1>Finaliser</h1></div>
+    <div class="checkout">
+      <form class="form" id="checkout-form" novalidate>
+        <fieldset>
+          <legend>Vos coordonnées</legend>
+          <div class="field"><label for="name">Nom et prénom</label><input class="input" id="name" name="name" autocomplete="name" required></div>
+          <div class="row-2">
+            <div class="field"><label for="phone">Téléphone</label><input class="input" id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" pattern="[0-9+ ]{8,20}" required></div>
+            <div class="field"><label for="email">E-mail (facultatif)</label><input class="input" id="email" name="email" type="email" autocomplete="email"></div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Mode de réception</legend>
+          <div class="options" id="ship-options"></div>
+          <div id="address-fields" hidden style="display:grid;gap:1rem">
+            <div class="field"><label for="street">Adresse</label><input class="input" id="street" name="street" autocomplete="street-address" data-req></div>
+            <div class="row-2">
+              <div class="field"><label for="zip">Code postal</label><input class="input" id="zip" name="zip" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}" data-req></div>
+              <div class="field"><label for="city">Ville</label><input class="input" id="city" name="city" autocomplete="address-level2" data-req></div>
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Paiement</legend>
+          <div class="options" id="pay-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>Note</legend>
+          <div class="field"><label for="note">Une précision ? (créneau de retrait, teinte, etc.)</label><textarea class="input" id="note" name="note" rows="3"></textarea></div>
+        </fieldset>
+        <label class="check"><input type="checkbox" id="cgv" name="cgv" required><span>J'ai lu et j'accepte les <a href="legal.html#cgv" target="_blank">conditions générales de vente</a>.</span></label>
+        <button class="btn btn--block" type="submit">Valider ma commande</button>
+        <p class="note">Après validation, votre récapitulatif s'affiche et vous l'envoyez à la boutique en un clic. La commande est définitive après notre confirmation (disponibilité et paiement).</p>
+      </form>
+      <aside class="summary" id="summary" aria-label="Récapitulatif de commande"></aside>
+    </div>
+  </div>
+
+  <section class="confirm" id="confirm" hidden aria-live="polite">
+    <div class="confirm-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+    <span class="eyebrow">Commande préparée</span>
+    <h1 style="font-size:clamp(2rem,5vw,3rem)">Dernière étape : envoyez-la nous.</h1>
+    <p class="lead">Commande <span class="order-no" id="order-no"></span> · Total <b class="price" id="order-total"></b>. Envoyez le récapitulatif avec l'un des boutons ci-dessous. Nous vous répondons pour confirmer la disponibilité, le retrait ou la livraison, et le paiement.</p>
+    <p class="status-line" id="form-status" hidden></p>
+    <div class="send-grid" id="send-grid"></div>
+    <p class="note" id="ig-hint">Instagram : le récapitulatif est copié automatiquement. Collez-le dans la conversation qui s'ouvre, puis envoyez.</p>
+    <label class="sr-only" for="recap">Récapitulatif de la commande</label>
+    <textarea class="recap" id="recap" readonly></textarea>
+    <div><a class="link" href="boutique.html">Retour à la boutique</a></div>
+  </section>
+</div>
+</main>
+<footer id="site-footer" class="site-footer"></footer>
+<script src="assets/js/config.js"></script>
+<script src="assets/js/products.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
