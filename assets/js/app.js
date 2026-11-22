@@ -254,8 +254,8 @@
       var sub = subtotal();
       body.innerHTML = shipMeter(sub) + cart.map(function (l) {
         var p = byId(l.id);
-        return '<div class="line-item"><a class="li-media" href="produit.html#' + p.id + '" tabindex="-1">' + cardMedia(p) + "</a>" +
-          '<div class="li-main"><div class="li-top"><a href="produit.html#' + p.id + '">' + esc(p.name) + '</a><span class="price">' + money(p.price * l.qty) + "</span></div>" +
+        return '<div class="line-item"><a class="li-media" href="produit-' + p.id + '.html" tabindex="-1">' + cardMedia(p) + "</a>" +
+          '<div class="li-main"><div class="li-top"><a href="produit-' + p.id + '.html">' + esc(p.name) + '</a><span class="price">' + money(p.price * l.qty) + "</span></div>" +
           '<span class="li-sub">' + esc(p.size) + "</span>" +
           '<div class="li-actions">' + qtyCtl(p.id, l.qty) + '<button type="button" class="remove" data-remove="' + p.id + '">Retirer</button></div></div></div>';
       }).join("");
@@ -281,10 +281,10 @@
   /* ---------- cards ---------- */
   function card(p) {
     var sz = p.size.split("·")[0].trim();
-    return '<article class="card reveal"><div class="card-media-wrap"><a href="produit.html#' + p.id + '" class="card-media" aria-label="' + esc(p.name) + '">' + cardMedia(p) +
+    return '<article class="card reveal"><div class="card-media-wrap"><a href="produit-' + p.id + '.html" class="card-media" aria-label="' + esc(p.name) + '">' + cardMedia(p) +
       (p.badge ? '<span class="card-badge">' + esc(p.badge) + "</span>" : "") + "</a>" +
       '<button class="card-quick" type="button" data-add="' + p.id + '" aria-label="Ajouter ' + esc(p.name) + ' au panier">' + I.plus + "</button></div>" +
-      '<a href="produit.html#' + p.id + '" class="card-body"><span class="card-cat">' + esc(catLabel(p.category)) + "</span>" +
+      '<a href="produit-' + p.id + '.html" class="card-body"><span class="card-cat">' + esc(catLabel(p.category)) + "</span>" +
       '<span class="card-title">' + esc(p.name) + "</span>" +
       '<span class="card-meta"><span class="price">' + money(p.price) + (p.compareAt ? ' <s class="muted">' + money(p.compareAt) + "</s>" : "") + '</span><span class="card-size">' + esc(sz.length > 18 ? "" : sz) + "</span></span></a></article>";
   }
@@ -343,7 +343,7 @@
   pages.product = function () {
     var root = $("#pdp-root");
     function render() {
-      var id = decodeURIComponent(location.hash.slice(1)) || (PRODUCTS[0] && PRODUCTS[0].id);
+      var id = document.body.getAttribute("data-product") || decodeURIComponent(location.hash.slice(1)) || (PRODUCTS[0] && PRODUCTS[0].id);
       var p = byId(id);
       if (!p) {
         root.innerHTML = '<div class="empty" style="padding:6rem 0"><h1 style="font-size:2rem">Produit introuvable</h1><p style="margin:1rem 0 2rem">Ce produit n\'existe plus ou le lien est incomplet.</p><a class="btn" href="boutique.html">Voir la boutique</a></div>';
@@ -411,7 +411,7 @@
       return '<label class="option"><input type="radio" name="shipping" value="' + s.id + '"' + (i === 0 ? " checked" : "") + '><span><b>' + esc(s.label) + "</b><small>" + esc(s.desc) + '</small></span><span class="price" data-ship-price="' + s.id + '"></span></label>';
     }).join("");
     payOpts.innerHTML = CFG.payment.map(function (s, i) {
-      return '<label class="option" data-only="' + (s.only || "") + '"><input type="radio" name="payment" value="' + s.id + '"' + (i === 0 ? " checked" : "") + '><span><b>' + esc(s.label) + "</b><small>" + esc(s.desc) + "</small></span><span></span></label>";
+      return '<label class="option" data-online="' + (s.online ? 1 : "") + '" data-only="' + (s.only || "") + '"><input type="radio" name="payment" value="' + s.id + '"' + (i === 0 ? " checked" : "") + '><span><b>' + esc(s.label) + "</b><small>" + esc(s.desc) + "</small></span><span></span></label>";
     }).join("");
 
     function selShip() { var v = (form.querySelector('input[name="shipping"]:checked') || {}).value; return CFG.shipping.filter(function (s) { return s.id === v; })[0] || CFG.shipping[0]; }
@@ -427,7 +427,8 @@
       CFG.shipping.forEach(function (s) { var el = form.querySelector('[data-ship-price="' + s.id + '"]'); if (el) el.textContent = shippingCost(s, sub) === 0 ? "Offert" : money(shippingCost(s, sub)); });
       var needAddr = !!sh.needsAddress;
       $$(".option[data-only]", payOpts).forEach(function (o) {
-        var only = o.getAttribute("data-only"), off = !!only && only !== sh.id, inp = $("input", o);
+        var only = o.getAttribute("data-only"), inp = $("input", o);
+        var off = (!!only && only !== sh.id) || (!!o.getAttribute("data-online") && !payReady);
         o.hidden = off; inp.disabled = off; if (off && inp.checked) inp.checked = false;
       });
       if (!payOpts.querySelector("input:checked")) { var first = payOpts.querySelector("input:not([disabled])"); if (first) first.checked = true; }
@@ -440,10 +441,26 @@
         '<div class="totals"><div><span>Sous-total</span><span class="price">' + money(sub) + "</span></div><div><span>" + esc(sh.label) + '</span><span class="price">' + (shc === 0 ? "Offert" : money(shc)) + '</span></div><div class="grand"><span>Total</span><span class="price">' + money(sub + shc) + "</span></div></div>" +
         '<a href="boutique.html" class="note" style="text-decoration:underline">Continuer mes achats</a>';
     }
+    var payReady = false;
     onCartChange = renderSummary;
     form.addEventListener("change", renderSummary);
     renderSummary();
     if (!cart.length) return;
+
+    // Paiement en ligne disponible ? (fonction serveur + clé Stripe configurées)
+    if (CFG.onlinePayment && window.fetch) {
+      fetch("/api/status", { headers: { Accept: "application/json" } })
+        .then(function (r) { return r.ok ? r.json() : { payments: false }; })
+        .then(function (s) {
+          payReady = !!s.payments;
+          if (payReady) { var on = payOpts.querySelector('.option[data-online="1"] input'); if (on) { on.disabled = false; on.checked = true; } }
+          renderSummary();
+        })
+        .catch(function () { /* hébergement statique : commande par message */ });
+    }
+    if (/[?&]annule=1/.test(location.search)) payMsg("Paiement annulé. Votre panier est conservé, vous pouvez réessayer.", true);
+
+    function payMsg(t, err) { var el = $("#pay-status"); if (!el) return; el.hidden = !t; el.className = "status-line" + (err ? " err" : ""); el.textContent = t || ""; }
 
     // restore draft
     var draft = store("fade_checkout_draft") || {};
@@ -484,6 +501,24 @@
       ]).filter(function (x) { return x !== null; });
       order.text = lines.join("\n");
       store(ORDER_KEY, order);
+
+      if (pay.online && payReady) {
+        var btn = form.querySelector('button[type="submit"]'), label = btn.textContent;
+        btn.disabled = true; btn.textContent = "Redirection vers le paiement sécurisé…"; payMsg("");
+        fetch("/api/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify({ orderNo: no, items: cart.map(function (l) { return { id: l.id, qty: l.qty }; }), shipping: sh.id, customer: order.customer })
+        })
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok || !j.url) throw new Error(j.error || "Erreur de paiement"); return j; }); })
+          .then(function (j) { location.href = j.url; })
+          .catch(function (err) {
+            btn.disabled = false; btn.textContent = label;
+            payMsg(err.message + " Vous pouvez réessayer ou choisir un autre mode de paiement.", true);
+          });
+        return;
+      }
+
       showConfirm(order);
       cart = []; saveCart(); store("fade_checkout_draft", null);
     });
@@ -521,6 +556,33 @@
         navigator.clipboard.writeText(t).then(function () { toast(silent ? "Récapitulatif copié : collez-le dans la conversation Instagram" : "Récapitulatif copié"); }, fallback);
       } else fallback();
     }
+  };
+
+  pages.thanks = function () {
+    var root = $("#thanks-root"), id = (location.search.match(/[?&]session_id=([^&]+)/) || [])[1];
+    function fail(msg) {
+      root.innerHTML = '<span class="eyebrow">Commande</span><h1>Vérification impossible</h1><p class="lead">' + esc(msg) + '</p><a class="btn" href="contact.html">Nous contacter</a>';
+    }
+    if (!id) return fail("Aucune commande à afficher. Si vous venez de payer, vous avez reçu un reçu par e-mail.");
+    fetch("/api/order?session_id=" + encodeURIComponent(id), { headers: { Accept: "application/json" } })
+      .then(function (r) { return r.json(); })
+      .then(function (o) {
+        if (o.error) return fail(o.error);
+        if (o.paid) { cart = []; saveCart(); store("fade_checkout_draft", null); }
+        var retrait = o.delivery === "retrait";
+        root.innerHTML =
+          '<div class="confirm-badge">' + I.check + "</div>" +
+          '<span class="eyebrow">' + (o.paid ? "Paiement confirmé" : "Paiement en attente") + "</span>" +
+          "<h1>" + (o.paid ? "Merci" + (o.name ? " " + esc(o.name.split(" ")[0]) : "") + ", c'est validé." : "Commande en cours de traitement") + "</h1>" +
+          '<p class="lead">Commande <span class="order-no">' + esc(o.order || "") + "</span>. " +
+          (o.paid ? "Un reçu a été envoyé à " + esc(o.email || "votre adresse e-mail") + ". " + (retrait ? "Nous vous contactons très vite pour fixer le créneau de retrait au salon." : "Votre colis part sous 48 h ouvrées, vous recevrez le suivi par e-mail.") : "Nous vous confirmerons la commande dès réception du paiement.") + "</p>" +
+          '<div class="summary">' + o.items.map(function (it) {
+            return '<div class="totals"><div><span>' + esc(it.name) + " × " + it.qty + '</span><span class="price">' + money(it.total) + "</span></div></div>";
+          }).join("") +
+          '<div class="totals"><div><span>Livraison</span><span class="price">' + (o.shipping ? money(o.shipping) : "Offert") + '</span></div><div class="grand"><span>Total payé</span><span class="price">' + money(o.total) + "</span></div></div></div>" +
+          '<div><a class="btn" href="boutique.html">Retour à la boutique</a></div>';
+      })
+      .catch(function () { fail("Connexion impossible. Votre paiement reste valable : vérifiez le reçu reçu par e-mail."); });
   };
 
   /* ---------- boot ---------- */

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /commande.html
-Sitemap: https://samir-bkh.github.io/FADE/sitemap.xml
+Disallow: /merci.html
+Disallow: /api/
+
+Sitemap: https://fade-barbers.netlify.app/sitemap.xml

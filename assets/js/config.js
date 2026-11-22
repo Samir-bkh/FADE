@@ -3,8 +3,15 @@
  * Modifiez ce fichier pour brancher vos vrais canaux de commande.
  * Aucun autre fichier n'a besoin d'être touché.
  */
-window.FADE_CONFIG = {
+(function (g) {
+g.FADE_CONFIG = {
   brand: "FADE",
+  // Adresse publique du site (sans "/" final). Mise à jour automatique sur Netlify.
+  siteUrl: "https://fade-barbers.netlify.app",
+
+  // Paiement en ligne sécurisé par Stripe (carte, Apple Pay, Google Pay).
+  // Nécessite la variable STRIPE_SECRET_KEY sur l'hébergeur (voir README).
+  onlinePayment: true,
   tagline: "Barbers",
   owner: "jesuispassechezsouf",
 
@@ -40,8 +47,8 @@ window.FADE_CONFIG = {
     }
   ],
   payment: [
-    { id: "remise", label: "Paiement au retrait", desc: "Espèces ou carte au salon.", only: "retrait" },
-    { id: "virement", label: "Virement / paiement en ligne", desc: "Lien ou RIB envoyé avec la confirmation de commande." }
+    { id: "carte", label: "Carte bancaire, Apple Pay, Google Pay", desc: "Paiement 100 % sécurisé par Stripe (3D Secure). Vos données bancaires ne transitent jamais par ce site.", online: true },
+    { id: "remise", label: "Paiement au retrait", desc: "Espèces ou carte au salon.", only: "retrait" }
   ],
 
   // Mentions légales (à compléter avant mise en ligne définitive) -------
@@ -51,6 +58,8 @@ window.FADE_CONFIG = {
     siret: "[SIRET]",
     address: "[Adresse du siège]",
     publisher: "[Nom du responsable de la publication]",
-    host: "GitHub Pages — GitHub, Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA"
+    host: "Netlify, Inc., 101 2nd Street, San Francisco, CA 94105, USA — www.netlify.com"
   }
 };
+if (typeof module === "object" && module.exports) module.exports = g.FADE_CONFIG;
+})(typeof window !== "undefined" ? window : globalThis);

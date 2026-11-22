@@ -5,7 +5,8 @@
  * nozzle (flacon applicateur), jar (pot), dropper (compte-gouttes), tall (flacon),
  * spray (vaporisateur), box (coffret). "image" remplace le visuel par une photo.
  */
-window.FADE_CATEGORIES = [
+(function (g) {
+g.FADE_CATEGORIES = [
   { id: "coloration", label: "Coloration", desc: "Semi-permanente, pigments riches." },
   { id: "coiffage", label: "Coiffage", desc: "Cires, pommades, textures." },
   { id: "soin", label: "Soin", desc: "Cheveux et cuir chevelu." },
@@ -13,7 +14,7 @@ window.FADE_CATEGORIES = [
   { id: "coffret", label: "Coffrets", desc: "Les essentiels réunis." }
 ];
 
-window.FADE_PRODUCTS = [
+g.FADE_PRODUCTS = [
   {
     id: "coloration-noir",
     name: "Coloration semi-permanente Noir",
@@ -179,3 +180,5 @@ window.FADE_PRODUCTS = [
     info: "Voir chaque produit pour le détail d'utilisation."
   }
 ];
+if (typeof module === "object" && module.exports) module.exports = { categories: g.FADE_CATEGORIES, products: g.FADE_PRODUCTS };
+})(typeof window !== "undefined" ? window : globalThis);
