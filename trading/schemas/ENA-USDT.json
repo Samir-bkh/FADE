@@ -1,0 +1,58 @@
+{
+  "version": "ENA-USDT.v1.0",
+  "symbol": "ENA-USDT",
+  "thesis": "Ethena : déblocage début décembre, montant et date divergents selon les sources (~28 M$ le 01/12 vs ~94 M$ le 02/12). Trade d'événement, pas de thèse fondamentale.",
+  "horizon_min": 30,
+  "reward_risk": 1.5,
+  "stop_bps": 150,
+  "questions": [
+    {
+      "key": "regime",
+      "kind": "choice",
+      "prompt": "Quel est le régime de marché à court terme pour ce symbole, d'après l'état ?",
+      "options": [
+        "trending",
+        "mean_reverting",
+        "high_vol",
+        "crisis"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "direction",
+      "kind": "choice",
+      "prompt": "Sur l'horizon indiqué, quelle position a l'espérance la plus favorable ? Biais : neutre ; trader uniquement la réaction au déblocage, dans le sens du flux.",
+      "options": [
+        "long",
+        "short",
+        "neutral"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "toxic_flow",
+      "kind": "noul",
+      "prompt": "Le flux d'ordres récent est-il toxique (informé/adverse) pour un preneur de liquidité ?",
+      "options": [],
+      "levels": 0
+    },
+    {
+      "key": "setup_quality",
+      "kind": "score",
+      "prompt": "Qualité de la configuration : 0 = aucune, 1 = faible, 2 = bonne, 3 = excellente.",
+      "options": [],
+      "levels": 4
+    },
+    {
+      "key": "risk_state",
+      "kind": "choice",
+      "prompt": "Compte tenu de la position, du drawdown et de la volatilité, quel état de risque ?",
+      "options": [
+        "safe",
+        "near_limit",
+        "reduce"
+      ],
+      "levels": 0
+    }
+  ]
+}

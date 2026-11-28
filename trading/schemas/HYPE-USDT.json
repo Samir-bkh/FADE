@@ -1,0 +1,58 @@
+{
+  "version": "HYPE-USDT.v1.0",
+  "symbol": "HYPE-USDT",
+  "thesis": "Hyperliquid : ~80 M$ de revenus protocole sur 30 j (DefiLlama, ~27/11), quasi-totalité vers rachats HYPE ; rachats 2026 ~791 M$ pour +0,43 % d'offre circulante (12/11). Catalyseur négatif confirmé : déblocage contributeurs jusqu'à 9,92 M HYPE le 06/12.",
+  "horizon_min": 120,
+  "reward_risk": 2.0,
+  "stop_bps": 150,
+  "questions": [
+    {
+      "key": "regime",
+      "kind": "choice",
+      "prompt": "Quel est le régime de marché à court terme pour ce symbole, d'après l'état ?",
+      "options": [
+        "trending",
+        "mean_reverting",
+        "high_vol",
+        "crisis"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "direction",
+      "kind": "choice",
+      "prompt": "Sur l'horizon indiqué, quelle position a l'espérance la plus favorable ? Biais : long sur repli si flux acheteur ; neutre/short autour du déblocage du 06/12.",
+      "options": [
+        "long",
+        "short",
+        "neutral"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "toxic_flow",
+      "kind": "noul",
+      "prompt": "Le flux d'ordres récent est-il toxique (informé/adverse) pour un preneur de liquidité ?",
+      "options": [],
+      "levels": 0
+    },
+    {
+      "key": "setup_quality",
+      "kind": "score",
+      "prompt": "Qualité de la configuration : 0 = aucune, 1 = faible, 2 = bonne, 3 = excellente.",
+      "options": [],
+      "levels": 4
+    },
+    {
+      "key": "risk_state",
+      "kind": "choice",
+      "prompt": "Compte tenu de la position, du drawdown et de la volatilité, quel état de risque ?",
+      "options": [
+        "safe",
+        "near_limit",
+        "reduce"
+      ],
+      "levels": 0
+    }
+  ]
+}

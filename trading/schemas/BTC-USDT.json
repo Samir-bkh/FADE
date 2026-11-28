@@ -1,0 +1,58 @@
+{
+  "version": "BTC-USDT.v1.0",
+  "symbol": "BTC-USDT",
+  "thesis": "Régime 2026-11 : BTC ~60-64k, Fear&Greed 11 (19/11), sorties ETF spot ~2,7 Md$ sur 30 j, funding proche de neutre. Hypothèse : capitulation -> rebonds de retour à la moyenne tradables, tendance de fond baissière. Pas de long sans absorption visible du flux vendeur.",
+  "horizon_min": 60,
+  "reward_risk": 1.8,
+  "stop_bps": 80,
+  "questions": [
+    {
+      "key": "regime",
+      "kind": "choice",
+      "prompt": "Quel est le régime de marché à court terme pour ce symbole, d'après l'état ?",
+      "options": [
+        "trending",
+        "mean_reverting",
+        "high_vol",
+        "crisis"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "direction",
+      "kind": "choice",
+      "prompt": "Sur l'horizon indiqué, quelle position a l'espérance la plus favorable ? Biais : neutre à long uniquement sur absorption ; short autorisé si cassure avec flux vendeur.",
+      "options": [
+        "long",
+        "short",
+        "neutral"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "toxic_flow",
+      "kind": "noul",
+      "prompt": "Le flux d'ordres récent est-il toxique (informé/adverse) pour un preneur de liquidité ?",
+      "options": [],
+      "levels": 0
+    },
+    {
+      "key": "setup_quality",
+      "kind": "score",
+      "prompt": "Qualité de la configuration : 0 = aucune, 1 = faible, 2 = bonne, 3 = excellente.",
+      "options": [],
+      "levels": 4
+    },
+    {
+      "key": "risk_state",
+      "kind": "choice",
+      "prompt": "Compte tenu de la position, du drawdown et de la volatilité, quel état de risque ?",
+      "options": [
+        "safe",
+        "near_limit",
+        "reduce"
+      ],
+      "levels": 0
+    }
+  ]
+}

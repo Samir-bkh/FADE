@@ -1,0 +1,58 @@
+{
+  "version": "ETH-USDT.v1.0",
+  "symbol": "ETH-USDT",
+  "thesis": "ETH ~1 670-1 740 $ (27/11), sous résistance ~1 982 $ (Au79), dominance ETH ~10 %, dominance BTC ~58-60 %. Hypothèse : faiblesse relative persistante vs BTC.",
+  "horizon_min": 60,
+  "reward_risk": 1.8,
+  "stop_bps": 100,
+  "questions": [
+    {
+      "key": "regime",
+      "kind": "choice",
+      "prompt": "Quel est le régime de marché à court terme pour ce symbole, d'après l'état ?",
+      "options": [
+        "trending",
+        "mean_reverting",
+        "high_vol",
+        "crisis"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "direction",
+      "kind": "choice",
+      "prompt": "Sur l'horizon indiqué, quelle position a l'espérance la plus favorable ? Biais : short ou neutre tant que la faiblesse relative persiste ; long seulement contre-tendance court.",
+      "options": [
+        "long",
+        "short",
+        "neutral"
+      ],
+      "levels": 0
+    },
+    {
+      "key": "toxic_flow",
+      "kind": "noul",
+      "prompt": "Le flux d'ordres récent est-il toxique (informé/adverse) pour un preneur de liquidité ?",
+      "options": [],
+      "levels": 0
+    },
+    {
+      "key": "setup_quality",
+      "kind": "score",
+      "prompt": "Qualité de la configuration : 0 = aucune, 1 = faible, 2 = bonne, 3 = excellente.",
+      "options": [],
+      "levels": 4
+    },
+    {
+      "key": "risk_state",
+      "kind": "choice",
+      "prompt": "Compte tenu de la position, du drawdown et de la volatilité, quel état de risque ?",
+      "options": [
+        "safe",
+        "near_limit",
+        "reduce"
+      ],
+      "levels": 0
+    }
+  ]
+}
